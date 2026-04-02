@@ -9,6 +9,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    {
+      path: '/tools/bili-check',
+      name: 'bili-check',
+      component: () => import('../views/tools/BiliCheck.vue'),
+    },
   ],
 })
 

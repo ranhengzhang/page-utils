@@ -4,6 +4,13 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const tools = [
+  {
+    id: 'bili-check',
+    name: 'Bili Check',
+    desc: '让分 P 视频学习更有条理',
+    icon: '📺',
+    path: '/tools/bili-check'
+  }
 ]
 
 const navigateToTool = (path: string) => {
