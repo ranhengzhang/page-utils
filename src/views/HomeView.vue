@@ -10,6 +10,13 @@ const tools = [
     desc: '让分 P 视频学习更有条理',
     icon: '📺',
     path: '/tools/bili-check'
+  },
+  {
+    id: 'img-to-markdown',
+    name: 'IMG → Markdown',
+    desc: '将 HTML img 标签转换为 Markdown',
+    icon: '🖼️',
+    path: '/tools/img-to-markdown'
   }
 ]
 

@@ -14,6 +14,11 @@ const router = createRouter({
       name: 'bili-check',
       component: () => import('../views/tools/BiliCheck.vue'),
     },
+    {
+      path: '/tools/img-to-markdown',
+      name: 'img-to-markdown',
+      component: () => import('../views/tools/ImgToMarkdown.vue'),
+    },
   ],
 })
 
