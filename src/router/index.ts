@@ -24,6 +24,11 @@ const router = createRouter({
       name: 'regex-extractor',
       component: () => import('../views/tools/RegexExtractor.vue'),
     },
+    {
+      path: '/tools/ruby-generator',
+      name: 'ruby-generator',
+      component: () => import('../views/tools/RubyGenerator.vue'),
+    },
   ],
 })
 

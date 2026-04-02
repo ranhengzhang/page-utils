@@ -24,6 +24,13 @@ const tools = [
     desc: '现代化正则表达式提取工具',
     icon: '🔍',
     path: '/tools/regex-extractor'
+  },
+  {
+    id: 'ruby-generator',
+    name: 'Ruby Generator',
+    desc: '振假名生成工具',
+    icon: '🇯🇵',
+    path: '/tools/ruby-generator'
   }
 ]
 
