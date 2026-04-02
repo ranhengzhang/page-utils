@@ -29,6 +29,11 @@ const router = createRouter({
       name: 'ruby-generator',
       component: () => import('../views/tools/RubyGenerator.vue'),
     },
+    {
+      path: '/tools/review-content-generator',
+      name: 'review-content-generator',
+      component: () => import('../views/tools/ReviewContentGenerator.vue'),
+    },
   ],
 });
 

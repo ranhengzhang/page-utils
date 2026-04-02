@@ -126,8 +126,12 @@
 <template>
   <div class="w-full max-w-2xl">
     <header class="text-center mb-10 select-none">
-      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">Bili Check</h1>
-      <p class="text-gray-400 text-sm">让分 P 视频学习更有条理</p>
+      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">
+        Bili Check
+      </h1>
+      <p class="text-gray-400 text-sm">
+        让分 P 视频学习更有条理
+      </p>
     </header>
 
     <main class="space-y-6">
@@ -142,11 +146,15 @@
         <div
           v-if="loading"
           class="w-5 h-5 border-2 border-white/20 border-t-pink-500 rounded-full animate-spin flex-shrink-0"
-        />
+        ></div>
       </div>
 
       <TransitionGroup name="fade-up">
-        <div v-if="videoTitle" key="video" class="glass p-6 rounded-3xl">
+        <div
+          v-if="videoTitle"
+          key="video"
+          class="glass p-6 rounded-3xl"
+        >
           <div class="flex gap-5 items-center max-sm:flex-col max-sm:text-center">
             <img
               :src="proxiedVideoPic"
@@ -175,7 +183,11 @@
           </div>
         </div>
 
-        <div v-if="markdownTodo" key="md" class="glass p-6 rounded-3xl">
+        <div
+          v-if="markdownTodo"
+          key="md"
+          class="glass p-6 rounded-3xl"
+        >
           <div class="flex justify-between items-center mb-4">
             <span class="text-white font-medium">Markdown 待办列表</span>
             <button
@@ -205,7 +217,11 @@
         </div>
       </TransitionGroup>
 
-      <CollapsibleRoot v-if="jsons" v-model:open="isJsonOpen" class="text-center">
+      <CollapsibleRoot
+        v-if="jsons"
+        v-model:open="isJsonOpen"
+        class="text-center"
+      >
         <CollapsibleTrigger as-child>
           <button class="text-xs text-gray-400 select-none hover:text-gray-300 transition-colors">
             {{ isJsonOpen ? '收起' : '展开' }}开发者 JSON 数据
@@ -216,8 +232,7 @@
             <ScrollAreaViewport class="w-full max-w-full">
               <pre
                 class="inline-block min-w-full text-left text-gray-400 p-4 text-xs whitespace-pre"
-                >{{ jsons }}</pre
-              >
+              >{{ jsons }}</pre>
             </ScrollAreaViewport>
             <ScrollAreaScrollbar
               orientation="horizontal"

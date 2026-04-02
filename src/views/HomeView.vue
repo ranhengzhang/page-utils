@@ -32,6 +32,13 @@
       icon: '🇯🇵',
       path: '/tools/ruby-generator',
     },
+    {
+      id: 'review-content-generator',
+      name: 'Review Content Generator',
+      desc: '审核内容生成工具',
+      icon: '📝',
+      path: '/tools/review-content-generator',
+    },
   ];
 
   const navigateToTool = (path: string) => {

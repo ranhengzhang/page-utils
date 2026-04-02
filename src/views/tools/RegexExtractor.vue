@@ -24,8 +24,12 @@
 <template>
   <div class="w-full max-w-2xl">
     <header class="text-center mb-10 select-none">
-      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">Regex Extractor</h1>
-      <p class="text-gray-400 text-sm">现代化正则表达式提取工具</p>
+      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">
+        Regex Extractor
+      </h1>
+      <p class="text-gray-400 text-sm">
+        现代化正则表达式提取工具
+      </p>
     </header>
 
     <main class="space-y-6">
@@ -36,7 +40,7 @@
           placeholder="在此处输入或粘贴需要处理的文本..."
           rows="5"
           class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50 resize-y"
-        />
+        ></textarea>
       </div>
 
       <div class="glass p-6 rounded-3xl">
@@ -53,7 +57,10 @@
           ]"
         />
         <transition name="fade">
-          <span v-if="!isRegexValid" class="block mt-2 text-red-400 text-sm select-none">
+          <span
+            v-if="!isRegexValid"
+            class="block mt-2 text-red-400 text-sm select-none"
+          >
             ⚠️ 非法的正则表达式格式
           </span>
         </transition>
@@ -68,7 +75,7 @@
           rows="5"
           class="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none resize-none cursor-text"
           @click="($event.target as HTMLTextAreaElement)?.select()"
-        />
+        ></textarea>
       </div>
     </main>
   </div>

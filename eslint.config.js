@@ -61,6 +61,18 @@ export default [
           style: { lang: 'css' },
         },
       ],
+      'vue/html-self-closing': [
+        'error',
+        {
+          html: {
+            void: 'always',
+            normal: 'never',
+            component: 'always',
+          },
+          svg: 'always',
+          math: 'always',
+        },
+      ],
 
       // 通用代码质量规则
       'no-console': 'warn',

@@ -29,7 +29,7 @@
   };
 
   function isFullWidth(char: string): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+     
     return eastAsianWidth(char.codePointAt(0) ?? 0) === 2;
   }
 
@@ -125,7 +125,7 @@
     while (!rb_next.done || !rt_next.done) {
       t.push('<ruby>');
       if (!rb_next.done) t.push(rb_next.value);
-      t.push(`<rt>${(rt_next.value as string) ?? ''}</rt>`);
+      t.push(`<rt>${(rt_next.value!) ?? ''}</rt>`);
       t.push('</ruby>');
       rb_next = rb_ite.next();
       rt_next = rt_ite.next();
@@ -148,7 +148,7 @@
         while (!rb_next.done || !rt_next.done) {
           t.push('<ruby>');
           if (!rb_next.done) t.push(rb_next.value);
-          t.push(`<rt>${(rt_next.value as string) ?? ''}</rt>`);
+          t.push(`<rt>${(rt_next.value!) ?? ''}</rt>`);
           t.push('</ruby>');
           rb_next = rb_ite.next();
           rt_next = rt_ite.next();
@@ -206,7 +206,10 @@
       >
         <span v-if="toast.type === 'success'">✅</span>
         <span v-else>⚠️</span>
-        <span class="ml-2" v-html="toast.msg" />
+        <span
+          class="ml-2"
+          v-html="toast.msg"
+        ></span>
       </div>
     </Transition>
 
@@ -214,7 +217,9 @@
       <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">
         Ruby Generator <sup class="text-pink-500">∞</sup>
       </h1>
-      <p class="text-gray-400 text-sm">振假名工具</p>
+      <p class="text-gray-400 text-sm">
+        振假名工具
+      </p>
     </header>
 
     <main class="space-y-6">
@@ -240,9 +245,7 @@
             </div>
           </div>
           <div>
-            <label class="block text-white font-medium mb-3 select-none text-sm"
-              >振假名 (Furigana)</label
-            >
+            <label class="block text-white font-medium mb-3 select-none text-sm">振假名 (Furigana)</label>
             <div class="relative">
               <input
                 v-model="rt_val"
@@ -270,8 +273,13 @@
           title="点击复制"
           @click="writeText(rubyText, 'Ruby HTML')"
         >
-          <div class="text-xs text-gray-500 mb-2 select-none">预览 (点击复制)</div>
-          <div class="flex flex-wrap gap-1.5 justify-center items-end text-4xl" v-html="rubyHTML" />
+          <div class="text-xs text-gray-500 mb-2 select-none">
+            预览 (点击复制)
+          </div>
+          <div
+            class="flex flex-wrap gap-1.5 justify-center items-end text-4xl"
+            v-html="rubyHTML"
+          ></div>
         </div>
 
         <!-- 按钮区域 -->

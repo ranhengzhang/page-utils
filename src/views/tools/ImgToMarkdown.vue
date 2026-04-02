@@ -70,8 +70,12 @@
 <template>
   <div class="w-full max-w-2xl">
     <header class="text-center mb-10 select-none">
-      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">IMG → Markdown</h1>
-      <p class="text-gray-400 text-sm">粘贴 HTML5 图片标签，只提取 src / alt 并转换为 Markdown</p>
+      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">
+        IMG → Markdown
+      </h1>
+      <p class="text-gray-400 text-sm">
+        粘贴 HTML5 图片标签，只提取 src / alt 并转换为 Markdown
+      </p>
     </header>
 
     <main class="space-y-6">
@@ -89,12 +93,18 @@
           v-model="input"
           rows="3"
           spellcheck="false"
-          placeholder='<img src="https://example.com/a.png" alt="示例图片" loading="lazy" width="320" />'
+          placeholder="<img src=&quot;https://example.com/a.png&quot; alt=&quot;示例图片&quot; loading=&quot;lazy&quot; width=&quot;320&quot; />"
           class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50 resize-y font-mono text-sm"
-        />
+        ></textarea>
         <div class="mt-3 text-sm">
-          <span v-if="result.error" class="text-red-400">{{ result.error }}</span>
-          <span v-else class="text-emerald-400">
+          <span
+            v-if="result.error"
+            class="text-red-400"
+          >{{ result.error }}</span>
+          <span
+            v-else
+            class="text-emerald-400"
+          >
             已识别：src{{ result.src ? ' ✓' : ' ×' }}，alt{{ result.alt ? ' ✓' : ' ×' }}
           </span>
         </div>
@@ -118,8 +128,13 @@
           spellcheck="false"
           placeholder="这里会输出：![alt](src)"
           class="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none resize-none font-mono text-sm"
-        />
-        <div v-if="copied" class="mt-3 text-sm text-emerald-400">已复制到剪贴板</div>
+        ></textarea>
+        <div
+          v-if="copied"
+          class="mt-3 text-sm text-emerald-400"
+        >
+          已复制到剪贴板
+        </div>
       </div>
     </main>
   </div>

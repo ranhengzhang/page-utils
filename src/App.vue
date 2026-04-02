@@ -12,9 +12,9 @@
   <div class="app-container">
     <!-- 动态渐变背景 -->
     <div class="gradient-bg">
-      <div class="gradient-blob blob-1" />
-      <div class="gradient-blob blob-2" />
-      <div class="gradient-blob blob-3" />
+      <div class="gradient-blob blob-1"></div>
+      <div class="gradient-blob blob-2"></div>
+      <div class="gradient-blob blob-3"></div>
     </div>
 
     <!-- 内容区域 -->
@@ -25,7 +25,10 @@
             <RouterView />
           </div>
         </ScrollAreaViewport>
-        <ScrollAreaScrollbar class="scroll-scrollbar" orientation="vertical">
+        <ScrollAreaScrollbar
+          class="scroll-scrollbar"
+          orientation="vertical"
+        >
           <ScrollAreaThumb class="scroll-thumb" />
         </ScrollAreaScrollbar>
       </ScrollAreaRoot>
