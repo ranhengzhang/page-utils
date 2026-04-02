@@ -17,6 +17,13 @@ const tools = [
     desc: '将 HTML img 标签转换为 Markdown',
     icon: '🖼️',
     path: '/tools/img-to-markdown'
+  },
+  {
+    id: 'regex-extractor',
+    name: 'Regex Extractor',
+    desc: '现代化正则表达式提取工具',
+    icon: '🔍',
+    path: '/tools/regex-extractor'
   }
 ]
 

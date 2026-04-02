@@ -19,6 +19,11 @@ const router = createRouter({
       name: 'img-to-markdown',
       component: () => import('../views/tools/ImgToMarkdown.vue'),
     },
+    {
+      path: '/tools/regex-extractor',
+      name: 'regex-extractor',
+      component: () => import('../views/tools/RegexExtractor.vue'),
+    },
   ],
 })
 
