@@ -1,32 +1,30 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+  import { ref, computed } from 'vue';
 
-const sourceText = ref('')
-const regexPattern = ref(String.raw`(?<=\d\.\s).*?(?=\n|$)`)
-const isRegexValid = ref(true)
+  const sourceText = ref('');
+  const regexPattern = ref(String.raw`(?<=\d\.\s).*?(?=\n|$)`);
+  const isRegexValid = ref(true);
 
-const extractionResult = computed(() => {
-  if (!regexPattern.value) return ''
+  const extractionResult = computed(() => {
+    if (!regexPattern.value) return '';
 
-  try {
-    const re = new RegExp(regexPattern.value, 'g')
-    isRegexValid.value = true
+    try {
+      const re = new RegExp(regexPattern.value, 'g');
+      isRegexValid.value = true;
 
-    const matches = sourceText.value.match(re)
-    return matches ? matches.join('\n') : '未匹配到内容'
-  } catch (e) {
-    isRegexValid.value = false
-    return ''
-  }
-})
+      const matches = sourceText.value.match(re);
+      return matches ? matches.join('\n') : '未匹配到内容';
+    } catch (e) {
+      isRegexValid.value = false;
+      return '';
+    }
+  });
 </script>
 
 <template>
   <div class="w-full max-w-2xl">
     <header class="text-center mb-10 select-none">
-      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">
-        Regex Extractor
-      </h1>
+      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">Regex Extractor</h1>
       <p class="text-gray-400 text-sm">现代化正则表达式提取工具</p>
     </header>
 
@@ -49,7 +47,9 @@ const extractionResult = computed(() => {
           placeholder="例如: \d+ 或 [a-z]+"
           :class="[
             'w-full px-4 py-3 bg-black/20 border rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none font-mono text-sm',
-            isRegexValid ? 'border-white/10 focus:border-pink-500/50' : 'border-red-500 bg-red-500/10',
+            isRegexValid
+              ? 'border-white/10 focus:border-pink-500/50'
+              : 'border-red-500 bg-red-500/10',
           ]"
         />
         <transition name="fade">
@@ -75,12 +75,12 @@ const extractionResult = computed(() => {
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
 </style>

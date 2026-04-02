@@ -1,195 +1,194 @@
 <script setup lang="ts">
-import { watch, computed, ref } from 'vue'
-import { eastAsianWidth } from 'get-east-asian-width'
+  import { watch, computed, ref } from 'vue';
+  import { eastAsianWidth } from 'get-east-asian-width';
 
-const rb = ref<string>('')
-const rt = ref<string>('')
-const rbs = ref<string[]>([])
-const rts = ref<string[]>([])
-const smallKana = 'ぁぃぅぇぉゃゅょァィゥェォャュョ'
+  const rb = ref('');
+  const rt = ref('');
+  const rbs = ref<string[]>([]);
+  const rts = ref<string[]>([]);
+  const smallKana = 'ぁぃぅぇぉゃゅょァィゥェォャュョ';
 
-const toast = ref({
-  show: false,
-  msg: '',
-  type: 'success' as 'success' | 'error',
-})
+  const toast = ref({
+    show: false,
+    msg: '',
+    type: 'success' as 'success' | 'error',
+  });
 
-let toastTimer: ReturnType<typeof setTimeout> | null = null
+  let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
-const showToast = (msg: string, type: 'success' | 'error' = 'success') => {
-  toast.value.msg = msg
-  toast.value.type = type
-  toast.value.show = true
+  const showToast = (msg: string, type: 'success' | 'error' = 'success'): void => {
+    toast.value.msg = msg;
+    toast.value.type = type;
+    toast.value.show = true;
 
-  if (toastTimer) clearTimeout(toastTimer)
+    if (toastTimer) clearTimeout(toastTimer);
 
-  toastTimer = setTimeout(() => {
-    toast.value.show = false
-  }, 2500)
-}
+    toastTimer = setTimeout(() => {
+      toast.value.show = false;
+    }, 2500);
+  };
 
-function isFullWidth(char: string): boolean {
-  return eastAsianWidth(char.codePointAt(0) ?? 0) === 2
-}
-
-function splitWords(text: string): string[] {
-  let ret: string[] = ['']
-  for (const c of [...text]) {
-    if (smallKana.includes(c) || !isFullWidth(c)) ret[ret.length - 1] += c
-    else ret.push(c)
+  function isFullWidth(char: string): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+    return eastAsianWidth(char.codePointAt(0) ?? 0) === 2;
   }
-  return ret.filter((s) => s.length)
-}
 
-const writeText = async (content: string, type: string) => {
-  try {
-    await navigator.clipboard.writeText(content)
-    showToast(`已复制 ${type}`, 'success')
-  } catch (err) {
-    showToast('复制失败，请检查剪贴板权限', 'error')
-  }
-}
-
-const readText = async () => {
-  try {
-    const text = await navigator.clipboard.readText()
-    rb_val.value = text
-    showToast('内容已智能同步', 'success')
-  } catch (err) {
-    showToast('无法读取剪贴板，请点击允许权限', 'error')
-  }
-}
-
-watch(rb, () => {
-  const result: string[] = []
-
-  for (const char of [...rb.value]) {
-    if (smallKana.includes(char) && result.length > 0) {
-      result[result.length - 1] += char
-    } else {
-      result.push(char)
+  function splitWords(text: string): string[] {
+    const ret: string[] = [''];
+    for (const c of [...text]) {
+      if (smallKana.includes(c) || !isFullWidth(c)) ret[ret.length - 1] += c;
+      else ret.push(c);
     }
+    return ret.filter((s) => s.length);
   }
 
-  rbs.value = result
-})
+  const writeText = async (content: string, type: string): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText(content);
+      showToast(`已复制 ${type}`, 'success');
+    } catch {
+      showToast('复制失败，请检查剪贴板权限', 'error');
+    }
+  };
 
-watch(rt, () => {
-  rts.value = rt.value.split(' ')
-})
+  const readText = async (): Promise<void> => {
+    try {
+      const text = await navigator.clipboard.readText();
+      rb_val.value = text;
+      showToast('内容已智能同步', 'success');
+    } catch {
+      showToast('无法读取剪贴板，请点击允许权限', 'error');
+    }
+  };
 
-const rb_val = computed({
-  get: () => rb.value,
-  set: (v: string) => {
-    rt_val.value = ''
-    if (v.match(/.+\(.+\)/)) {
-      const [rb_, rt_] = v.split('(')
-      rb.value = rb_?.trim() ?? ''
-      rt_val.value = rt_?.trim() ?? ''
-    } else if (v.indexOf('|') != -1) {
-      const parts = v.split('|')
-      rb.value = parts[0] || ''
-      rt_val.value = ''
-      for (let i = 1; i < parts.length - 1; i++) {
-        let part = parts[i]
-        if (!part) continue
-        if (part.startsWith('<')) part = part.slice(1)
-        if (!part.endsWith('#')) rb.value += [...part].pop() ?? ''
-        rt_val.value += part.slice(0, part.length - 1)
+  watch(rb, () => {
+    const result: string[] = [];
+
+    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+    for (const char of [...rb.value]) {
+      if (smallKana.includes(char) && result.length > 0) {
+        result[result.length - 1] += char;
+      } else {
+        result.push(char);
       }
-      let last = parts.pop()
-      if (last && last.startsWith('<')) last = last.slice(1)
-      if (last) rt_val.value += last
-    } else {
-      rb.value = v
     }
-  },
-})
 
-const rt_val = computed({
-  get: () => rt.value,
-  set: (v: string) => {
-    rt.value = v.replace(')', '').replace(/\{.*?\}/, '')
-  },
-})
+    rbs.value = result;
+  });
 
-const rubyHTML = computed(() => {
-  const rb_ite = rbs.value.values()
-  const rt_ite = rts.value.values()
-  let t = []
-  let rb_next = rb_ite.next()
-  let rt_next = rt_ite.next()
-  while (!rb_next.done || !rt_next.done) {
-    t.push('<ruby>')
-    if (!rb_next.done) t.push(rb_next.value)
-    t.push(`<rt>${rt_next.value || ''}</rt>`)
-    t.push('</ruby>')
-    rb_next = rb_ite.next()
-    rt_next = rt_ite.next()
-  }
-  return t.join('')
-})
+  watch(rt, () => {
+    rts.value = rt.value.split(' ');
+  });
 
-const rubyText = computed(() => {
-  if (
-    rbs.value.length === rts.value.length &&
-    rbs.value.length != 0 &&
-    rts.value.length != 0
-  ) {
-    return rubyHTML.value
-  } else {
-    let parted_rb = splitWords(rb.value)
-    let parted_rt = splitWords(rt.value)
-    if (parted_rb.length == parted_rt.length) {
-      const rb_ite = parted_rb.values()
-      const rt_ite = parted_rt.values()
-      let t = []
-      let rb_next = rb_ite.next()
-      let rt_next = rt_ite.next()
-      while (!rb_next.done || !rt_next.done) {
-        t.push('<ruby>')
-        if (!rb_next.done) t.push(rb_next.value)
-        t.push(`<rt>${rt_next.value || ''}</rt>`)
-        t.push('</ruby>')
-        rb_next = rb_ite.next()
-        rt_next = rt_ite.next()
+  const rb_val = computed({
+    get: () => rb.value,
+    set: (v: string) => {
+      rt_val.value = '';
+      if (/.+\(.+\)/.exec(v)) {
+        const [rb_, rt_] = v.split('(');
+        rb.value = rb_?.trim() ?? '';
+        rt_val.value = rt_?.trim() ?? '';
+      } else if (v.includes('|')) {
+        const parts = v.split('|');
+        rb.value = parts[0] || '';
+        rt_val.value = '';
+        for (let i = 1; i < parts.length - 1; i++) {
+          let part = parts[i];
+          if (!part) continue;
+          if (part.startsWith('<')) part = part.slice(1);
+          // eslint-disable-next-line @typescript-eslint/no-misused-spread
+          if (!part.endsWith('#')) rb.value += [...part].pop() ?? '';
+          rt_val.value += part.slice(0, part.length - 1);
+        }
+        let last = parts.pop();
+        if (last?.startsWith('<')) last = last.slice(1);
+        if (last) rt_val.value += last;
+      } else {
+        rb.value = v;
       }
-      return t.join('')
+    },
+  });
+
+  const rt_val = computed({
+    get: () => rt.value,
+    set: (v: string) => {
+      rt.value = v.replace(')', '').replace(/\{.*?\}/, '');
+    },
+  });
+
+  const rubyHTML = computed(() => {
+    const rb_ite = rbs.value.values();
+    const rt_ite = rts.value.values();
+    const t = [];
+    let rb_next = rb_ite.next();
+    let rt_next = rt_ite.next();
+    while (!rb_next.done || !rt_next.done) {
+      t.push('<ruby>');
+      if (!rb_next.done) t.push(rb_next.value);
+      t.push(`<rt>${(rt_next.value as string) ?? ''}</rt>`);
+      t.push('</ruby>');
+      rb_next = rb_ite.next();
+      rt_next = rt_ite.next();
+    }
+    return t.join('');
+  });
+
+  const rubyText = computed(() => {
+    if (rbs.value.length === rts.value.length && rbs.value.length != 0 && rts.value.length != 0) {
+      return rubyHTML.value;
     } else {
-      return `<ruby>${rb.value}<rt>${rt.value}</rt></ruby>`
+      const parted_rb = splitWords(rb.value);
+      const parted_rt = splitWords(rt.value);
+      if (parted_rb.length == parted_rt.length) {
+        const rb_ite = parted_rb.values();
+        const rt_ite = parted_rt.values();
+        const t = [];
+        let rb_next = rb_ite.next();
+        let rt_next = rt_ite.next();
+        while (!rb_next.done || !rt_next.done) {
+          t.push('<ruby>');
+          if (!rb_next.done) t.push(rb_next.value);
+          t.push(`<rt>${(rt_next.value as string) ?? ''}</rt>`);
+          t.push('</ruby>');
+          rb_next = rb_ite.next();
+          rt_next = rt_ite.next();
+        }
+        return t.join('');
+      } else {
+        return `<ruby>${rb.value}<rt>${rt.value}</rt></ruby>`;
+      }
     }
-  }
-})
+  });
 
-const htmlText = computed(
-  () =>
-    `<div>\n<ruby part="ruby">${rb.value}<rt>${rt.value.replace(/\s/g, '')}</rt></ruby>\n</div>\n\n${rts.value.map((s) => `<kbd>${s}</kbd>`).join(' ')}`,
-)
+  const htmlText = computed(
+    () =>
+      `<div>\n<ruby part="ruby">${rb.value}<rt>${rt.value.replace(/\s/g, '')}</rt></ruby>\n</div>\n\n${rts.value.map((s) => `<kbd>${s}</kbd>`).join(' ')}`,
+  );
 
-const pairText = computed(() => `${rb.value}(${rt.value.replace(/\s/g, '')})`)
+  const pairText = computed(() => `${rb.value}(${rt.value.replace(/\s/g, '')})`);
 
-const assText = computed(() => {
-  let t = []
+  const assText = computed(() => {
+    const t = [];
 
-  for (let i = 0; i < rbs.value.length; i++) {
-    let rt_syls: string[] = ['']
-    const rtItem = rts.value[i] ?? ''
-    for (const c of [...rtItem]) {
-      if (smallKana.includes(c) || !isFullWidth(c))
-        rt_syls[rt_syls.length - 1] += c
-      else rt_syls.push(c)
+    for (let i = 0; i < rbs.value.length; i++) {
+      let rt_syls: string[] = [''];
+      const rtItem = rts.value[i] ?? '';
+      // eslint-disable-next-line @typescript-eslint/no-misused-spread
+      for (const c of [...rtItem]) {
+        if (smallKana.includes(c) || !isFullWidth(c)) rt_syls[rt_syls.length - 1] += c;
+        else rt_syls.push(c);
+      }
+      rt_syls = rt_syls.filter((s) => s.length);
+
+      t.push(`${rbs.value[i] ?? ''}${i == 0 ? '|<\n' : '|\n'}${rt_syls[0] ?? ''}`);
+
+      t.push(...rt_syls.slice(1).map((s) => `#|\n${s}`));
     }
-    rt_syls = rt_syls.filter((s) => s.length)
 
-    t.push(`${rbs.value[i]}${i == 0 ? '|<\n' : '|\n'}${rt_syls[0]}`)
+    return t.join('');
+  });
 
-    t.push(...rt_syls.slice(1).map((s) => `#|\n${s}`))
-  }
-
-  return t.join('')
-})
-
-rb_val.value = '両手(りょう て)'
+  rb_val.value = '両手(りょう て)';
 </script>
 
 <template>
@@ -223,9 +222,7 @@ rb_val.value = '両手(りょう て)'
       <div class="glass p-6 rounded-3xl">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label class="block text-white font-medium mb-3 select-none text-sm"
-              >汉字 (Base)</label
-            >
+            <label class="block text-white font-medium mb-3 select-none text-sm">汉字 (Base)</label>
             <div class="relative">
               <input
                 v-model="rb_val"
@@ -234,9 +231,9 @@ rb_val.value = '両手(りょう て)'
                 class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50"
               />
               <button
-                @click="writeText(rb, 'rb')"
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
                 title="复制"
+                @click="writeText(rb, 'rb')"
               >
                 📋
               </button>
@@ -254,9 +251,9 @@ rb_val.value = '両手(りょう て)'
                 class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50"
               />
               <button
-                @click="writeText(rt, 'rt')"
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
                 title="复制"
+                @click="writeText(rt, 'rt')"
               >
                 📋
               </button>
@@ -270,51 +267,46 @@ rb_val.value = '両手(りょう て)'
         <!-- 预览区域 -->
         <div
           class="glass p-6 rounded-3xl min-h-[140px] flex flex-col justify-center cursor-pointer hover:bg-white/10 transition-colors"
-          @click="writeText(rubyText, 'Ruby HTML')"
           title="点击复制"
+          @click="writeText(rubyText, 'Ruby HTML')"
         >
-          <div class="text-xs text-gray-500 mb-2 select-none">
-            预览 (点击复制)
-          </div>
-          <div
-            class="flex flex-wrap gap-1.5 justify-center items-end text-4xl"
-            v-html="rubyHTML"
-          />
+          <div class="text-xs text-gray-500 mb-2 select-none">预览 (点击复制)</div>
+          <div class="flex flex-wrap gap-1.5 justify-center items-end text-4xl" v-html="rubyHTML" />
         </div>
 
         <!-- 按钮区域 -->
         <div class="flex flex-wrap gap-3 content-start">
           <button
-            @click="readText"
             class="flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-white/10 text-gray-300 font-medium hover:bg-white/20 transition-all"
+            @click="readText"
           >
             📋 智能粘贴
           </button>
           <button
             v-if="rbs.length != 0 && rts.length != 0"
-            @click="writeText(pairText, '括号格式')"
             class="flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-pink-500 text-white font-medium hover:bg-pink-400 transition-all"
+            @click="writeText(pairText, '括号格式')"
           >
             括号格式
           </button>
           <button
             v-if="rbs.length == rts.length && rbs.length != 0 && rts.length != 0"
-            @click="writeText(assText, 'ASS格式')"
             class="flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-pink-500 text-white font-medium hover:bg-pink-400 transition-all"
+            @click="writeText(assText, 'ASS格式')"
           >
             ASS 格式
           </button>
           <button
             v-if="rbs.length != rts.length && rbs.length != 0 && rts.length != 0"
-            @click="writeText(`${rbs.join('')}|<${rts.join('')}`, 'ASS格式 (不分词)')"
             class="flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-pink-500 text-white font-medium hover:bg-pink-400 transition-all"
+            @click="writeText(`${rbs.join('')}|<${rts.join('')}`, 'ASS格式 (不分词)')"
           >
             ASS格式 (不分词)
           </button>
           <button
-            @click="writeText(htmlText, 'HTML代码')"
             :disabled="rbs.length != rts.length || rbs.length == 0 || rts.length == 0"
             class="flex-1 min-w-[120px] px-4 py-3 rounded-xl border border-white/20 text-gray-300 font-medium hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="writeText(htmlText, 'HTML代码')"
           >
             复制 SiYuan HTML 代码
           </button>
@@ -325,22 +317,22 @@ rb_val.value = '両手(りょう て)'
 </template>
 
 <style scoped>
-.toast-enter-active,
-.toast-leave-active {
-  transition: all 0.3s ease;
-}
-.toast-enter-from {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-20px);
-}
-.toast-leave-to {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-20px);
-}
+  .toast-enter-active,
+  .toast-leave-active {
+    transition: all 0.3s ease;
+  }
+  .toast-enter-from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  .toast-leave-to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
 
-:deep(rt) {
-  font-size: 0.9rem;
-  color: #fb7299;
-  font-weight: 600;
-}
+  :deep(rt) {
+    font-size: 0.9rem;
+    color: #fb7299;
+    font-weight: 600;
+  }
 </style>
