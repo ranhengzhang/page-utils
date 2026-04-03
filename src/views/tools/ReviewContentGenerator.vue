@@ -7,6 +7,7 @@ import {
   TabsContent,
   TabsIndicator,
 } from 'reka-ui';
+import { DocumentCopy } from '@element-plus/icons-vue';
 import OffsetCard from './components/OffsetCard.vue';
 import SplitCard from './components/SplitCard.vue';
 import MergeCard from './components/MergeCard.vue';
@@ -95,25 +96,25 @@ const handleWheel = (event: WheelEvent): void => {
             @click="void clipboard.writeText(`第 ${String(lineNum)} 行\n- [ ] `)"
             @wheel.prevent="handleWheel"
           >
-            <span>📋</span>
+            <DocumentCopy class="w-4 h-4" />
             <span>复制行号模板</span>
             <span
               class="px-2 py-0.5 bg-black/30 rounded text-xs font-mono"
               v-text="lineNum"
-            ></span>
+            />
           </button>
           <button
             class="flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 text-gray-300 font-medium hover:bg-white/20 transition-all"
             @click="void clipboard.writeText(`- BG 行\n  - [ ] `)"
           >
-            <span>📋</span>
+            <DocumentCopy class="w-4 h-4" />
             <span>复制 BG 行模板</span>
           </button>
           <button
             class="flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 text-gray-300 font-medium hover:bg-white/20 transition-all"
             @click="void clipboard.writeText(`以下为一组修改：\n- `)"
           >
-            <span>📋</span>
+            <DocumentCopy class="w-4 h-4" />
             <span>复制修改组模板</span>
           </button>
         </div>

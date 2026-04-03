@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue';
+  import { DocumentCopy } from '@element-plus/icons-vue';
 
   const input = ref('');
   const copied = ref(false);
@@ -94,7 +95,7 @@
           rows="3"
           spellcheck="false"
           placeholder="<img src=&quot;https://example.com/a.png&quot; alt=&quot;示例图片&quot; loading=&quot;lazy&quot; width=&quot;320&quot; />"
-          class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50 resize-y font-mono text-sm"
+          class="input-dark resize-y font-mono text-sm"
         ></textarea>
         <div class="mt-3 text-sm">
           <span
@@ -115,9 +116,10 @@
           <span class="text-white font-medium">输出（Markdown）</span>
           <button
             :disabled="!result.md"
-            class="px-4 py-2 rounded-full bg-pink-500 text-white text-sm hover:bg-pink-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-4 py-2 rounded-full bg-pink-500 text-white text-sm hover:bg-pink-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             @click="copy"
           >
+            <DocumentCopy class="w-4 h-4" />
             复制
           </button>
         </div>
@@ -127,7 +129,7 @@
           readonly
           spellcheck="false"
           placeholder="这里会输出：![alt](src)"
-          class="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none resize-none font-mono text-sm"
+          class="input-dark input-readonly resize-none font-mono text-sm"
         ></textarea>
         <div
           v-if="copied"

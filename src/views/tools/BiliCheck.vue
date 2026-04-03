@@ -141,7 +141,7 @@
         <input
           v-model.trim="inputBv"
           placeholder="输入或粘贴 BV 号..."
-          class="flex-1 bg-transparent text-white placeholder-gray-500 outline-none"
+          class="flex-1 bg-transparent text-white placeholder-gray-500 outline-none !bg-transparent !border-0 !p-0 !rounded-none focus:!ring-0"
         />
         <div
           v-if="loading"

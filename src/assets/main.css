@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* 基础 input/textarea 样式 - 全局自动应用 */
+  input, .input,
+  textarea, .textarea {
+    @apply w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus-within:outline-none focus-within:border-transparent focus-within:ring-2 focus-within:ring-pink-500;
+  }
+}
+
+@layer components {
+  /* 深色背景 input（用于 OffsetCard 等场景） */
+  .input-dark {
+    @apply bg-black/20 border-white/10 text-gray-300 placeholder-gray-600;
+  }
+
+  /* 只读 input */
+  .input-readonly {
+    @apply bg-white/5 cursor-default;
+  }
+
+  /* 小号 input */
+  .input-sm {
+    @apply px-3 py-2 text-sm;
+  }
+
+  /* 居中 input */
+  .input-center {
+    @apply text-center;
+  }
+}
+
 /* 全局重置和基础样式 */
 *,
 *::before,

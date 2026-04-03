@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { watch, computed, ref } from 'vue';
   import { eastAsianWidth } from 'get-east-asian-width';
+  import { DocumentCopy } from '@element-plus/icons-vue';
 
   const rb = ref('');
   const rt = ref('');
@@ -233,14 +234,14 @@
                 v-model="rb_val"
                 placeholder="请输入汉字..."
                 type="text"
-                class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50"
+                class="input-dark"
               />
               <button
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
                 title="复制"
                 @click="writeText(rb, 'rb')"
               >
-                📋
+                <DocumentCopy class="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -251,14 +252,14 @@
                 v-model="rt_val"
                 placeholder="りょう て"
                 type="text"
-                class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50"
+                class="input-dark"
               />
               <button
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
                 title="复制"
                 @click="writeText(rt, 'rt')"
               >
-                📋
+                <DocumentCopy class="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -285,10 +286,11 @@
         <!-- 按钮区域 -->
         <div class="flex flex-wrap gap-3 content-start">
           <button
-            class="flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-white/10 text-gray-300 font-medium hover:bg-white/20 transition-all"
+            class="flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-white/10 text-gray-300 font-medium hover:bg-white/20 transition-all flex items-center justify-center gap-2"
             @click="readText"
           >
-            📋 智能粘贴
+            <DocumentCopy class="w-4 h-4" />
+            智能粘贴
           </button>
           <button
             v-if="rbs.length != 0 && rts.length != 0"

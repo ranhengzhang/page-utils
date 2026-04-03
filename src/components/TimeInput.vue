@@ -51,7 +51,8 @@
   function getDigitIndex(cursorPos: number, formattedStr: string): number {
     let digitIndex = 0;
     for (let i = 0; i < cursorPos && i < formattedStr.length; i++) {
-      if (/\d/.test(formattedStr[i])) {
+      const char = formattedStr[i];
+      if (char && /\d/.test(char)) {
         digitIndex++;
       }
     }
@@ -62,7 +63,8 @@
   function getStringIndex(digitIndex: number, formattedStr: string): number {
     let count = 0;
     for (let i = 0; i < formattedStr.length; i++) {
-      if (/\d/.test(formattedStr[i])) {
+      const char = formattedStr[i];
+      if (char && /\d/.test(char)) {
         if (count === digitIndex) return i;
         count++;
       }
@@ -255,7 +257,7 @@
     ref="inputRef"
     :value="displayValue"
     type="text"
-    class="font-mono text-center px-4 py-2 bg-black/20 border border-white/10 rounded-xl text-gray-300 focus:outline-none focus:border-pink-500/50 w-24"
+    class="font-mono text-center px-4 py-2 bg-black/20 border border-white/10 rounded-xl text-gray-300 focus:outline-none focus:border-pink-500/50 w-28"
     @keydown="handleKeydown"
     @input="handleInput"
     @click="handleClick"

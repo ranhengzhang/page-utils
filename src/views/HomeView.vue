@@ -1,45 +1,8 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
+  import { tools } from '../config/tools';
 
   const router = useRouter();
-
-  const tools = [
-    {
-      id: 'bili-check',
-      name: 'Bili Check',
-      desc: '让分 P 视频学习更有条理',
-      icon: '📺',
-      path: '/tools/bili-check',
-    },
-    {
-      id: 'img-to-markdown',
-      name: 'IMG → Markdown',
-      desc: '将 HTML img 标签转换为 Markdown',
-      icon: '🖼️',
-      path: '/tools/img-to-markdown',
-    },
-    {
-      id: 'regex-extractor',
-      name: 'Regex Extractor',
-      desc: '现代化正则表达式提取工具',
-      icon: '🔍',
-      path: '/tools/regex-extractor',
-    },
-    {
-      id: 'ruby-generator',
-      name: 'Ruby Generator',
-      desc: '振假名生成工具',
-      icon: '🇯🇵',
-      path: '/tools/ruby-generator',
-    },
-    {
-      id: 'review-content-generator',
-      name: 'Review Content Generator',
-      desc: '审核内容生成工具',
-      icon: '📝',
-      path: '/tools/review-content-generator',
-    },
-  ];
 
   const navigateToTool = (path: string) => {
     router.push(path);

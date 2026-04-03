@@ -39,7 +39,7 @@
           v-model="sourceText"
           placeholder="在此处输入或粘贴需要处理的文本..."
           rows="5"
-          class="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none focus:border-pink-500/50 resize-y"
+          class="input-dark resize-y"
         ></textarea>
       </div>
 
@@ -73,7 +73,7 @@
           readonly
           placeholder="提取出的内容将显示在这里..."
           rows="5"
-          class="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none resize-none cursor-text"
+          class="input-dark input-readonly resize-none cursor-text"
           @click="($event.target as HTMLTextAreaElement)?.select()"
         ></textarea>
       </div>
