@@ -39,7 +39,7 @@ watch(
       const lastChar1 = lastChars.value[1] ?? '';
       const nextChar0 = nextChars.value[0] ?? '';
       const nextChar2 = nextChars.value[2] ?? '';
-      display.value = `${lastSyl.value}${nextSyl.value}需合并为「${lastChar0}${nextChar0}\`${lastChar1}\`\`${nextChar2}\`」`;
+      display.value = `${lastSyl.value}${nextSyl.value}需合并为「${lastChar0}${nextChar0}/\`${lastChar1}\`/\`${nextChar2}\`」`;
     } else {
       display.value = '';
     }
