@@ -13,6 +13,7 @@ import {
   RadioGroupIndicator,
 } from 'reka-ui';
 import { DocumentCopy, Back } from '@element-plus/icons-vue';
+import ClearableInput from '@/components/ClearableInput.vue';
 
 const lastOne = ref('');
 const nextOne = ref('');
@@ -99,10 +100,10 @@ const handleWheel = (event: WheelEvent): void => {
 <template>
   <!-- 输入行 -->
   <div class="grid grid-cols-[1fr_auto_1fr_auto] gap-3 items-center">
-    <input
+    <ClearableInput
       v-model="lastOne"
       placeholder="起始点"
-      class="input-dark"
+      input-class="input-dark"
     />
     <button
       class="w-10 h-10 rounded-full bg-white/10 text-gray-300 hover:bg-white/20 transition-colors flex items-center justify-center overflow-hidden"
@@ -114,18 +115,18 @@ const handleWheel = (event: WheelEvent): void => {
         :class="{ 'back-slide-animation': isBackAnimating }"
       />
     </button>
-    <input
+    <ClearableInput
       v-model="nextOne"
       placeholder="结束点"
-      class="input-dark"
+      input-class="input-dark"
     />
     <NumberFieldRoot
       v-model="offset"
       :min="0"
-      class="input input-dark px-3 py-2 flex items-center gap-2 focus-within:ring-2 focus-within:ring-pink-500 focus-within:border-transparent"
+      class="input input-dark px-3 py-2 flex items-center gap-2 input-focus"
     >
       <NumberFieldInput
-        class="bg-transparent !border-0 !p-0 !rounded-none focus:!ring-0 w-full"
+        class="bg-transparent !border-0 !p-0 !rounded-none focus:!ring-0 w-full focus-within:outline-none"
         @wheel.capture.stop.prevent="handleWheel"
       />
       <div class="flex flex-col gap-0.5">
@@ -242,7 +243,7 @@ const handleWheel = (event: WheelEvent): void => {
       v-model="display"
       readonly
       placeholder="结果预览..."
-      class="input-dark input-readonly"
+      class="input-dark input-readonly input-focus"
     />
     <button
       class="w-12 h-12 rounded-xl bg-emerald-500 text-white hover:bg-emerald-400 transition-colors flex items-center justify-center"

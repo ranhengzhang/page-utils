@@ -257,7 +257,7 @@
     ref="inputRef"
     :value="displayValue"
     type="text"
-    class="font-mono text-center px-4 py-2 bg-black/20 border border-white/10 rounded-xl text-gray-300 focus:outline-none focus:border-pink-500/50 w-28"
+    class="font-mono text-center px-4 py-2 bg-black/20 border border-white/10 rounded-xl text-gray-300 w-28 input-focus"
     @keydown="handleKeydown"
     @input="handleInput"
     @click="handleClick"

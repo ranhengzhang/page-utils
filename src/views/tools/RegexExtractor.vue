@@ -1,21 +1,28 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
+  import { ref, computed, watch } from 'vue';
 
   const sourceText = ref('');
   const regexPattern = ref(String.raw`(?<=\d\.\s).*?(?=\n|$)`);
   const isRegexValid = ref(true);
+
+  watch(regexPattern, (newVal) => {
+    try {
+      new RegExp(newVal, 'g');
+      isRegexValid.value = true;
+    } catch (e) {
+      isRegexValid.value = false; 
+    }
+  });
 
   const extractionResult = computed(() => {
     if (!regexPattern.value) return '';
 
     try {
       const re = new RegExp(regexPattern.value, 'g');
-      isRegexValid.value = true;
 
       const matches = sourceText.value.match(re);
       return matches ? matches.join('\n') : '未匹配到内容';
     } catch (e) {
-      isRegexValid.value = false;
       return '';
     }
   });
@@ -39,7 +46,7 @@
           v-model="sourceText"
           placeholder="在此处输入或粘贴需要处理的文本..."
           rows="5"
-          class="input-dark resize-y"
+          class="input-dark resize-y input-focus"
         ></textarea>
       </div>
 
@@ -50,7 +57,7 @@
           type="text"
           placeholder="例如: \d+ 或 [a-z]+"
           :class="[
-            'w-full px-4 py-3 bg-black/20 border rounded-xl text-gray-300 placeholder-gray-600 focus:outline-none font-mono text-sm',
+            'w-full px-4 py-3 bg-black/20 border rounded-xl text-gray-300 placeholder-gray-600 font-mono text-sm input-focus',
             isRegexValid
               ? 'border-white/10 focus:border-pink-500/50'
               : 'border-red-500 bg-red-500/10',
@@ -73,7 +80,7 @@
           readonly
           placeholder="提取出的内容将显示在这里..."
           rows="5"
-          class="input-dark input-readonly resize-none cursor-text"
+          class="input-dark input-readonly resize-none cursor-text input-focus"
           @click="($event.target as HTMLTextAreaElement)?.select()"
         ></textarea>
       </div>

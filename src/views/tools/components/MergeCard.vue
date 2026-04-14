@@ -63,13 +63,13 @@ const copyText = (): void => {
       v-model="lastSyl"
       type="text"
       placeholder="输入上一个音节..."
-      class="input-base"
+      class="input-base input-focus"
     />
     <input
       v-model="nextSyl"
       type="text"
       placeholder="输入下一个音节..."
-      class="input-base"
+      class="input-base input-focus"
     />
   </div>
 
@@ -82,11 +82,11 @@ const copyText = (): void => {
       readonly
       placeholder="结果预览..."
       rows="1"
-      class="input-base input-readonly resize-none"
+      class="input-base input-readonly resize-none input-focus"
     ></textarea>
     <button
       type="button"
-      class="w-12 h-12 rounded-full bg-green-500/80 hover:bg-green-400 flex items-center justify-center text-white transition-colors"
+      class="w-12 h-12 rounded-xl bg-emerald-500 text-white hover:bg-emerald-400 transition-colors flex items-center justify-center"
       @click="copyText"
     >
       <DocumentCopy class="w-5 h-5" />

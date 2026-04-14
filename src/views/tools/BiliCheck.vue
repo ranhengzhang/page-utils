@@ -9,6 +9,7 @@
     ScrollAreaScrollbar,
     ScrollAreaThumb,
   } from 'reka-ui';
+  import ClearableInput from '@/components/ClearableInput.vue';
 
   const inputBv = ref('');
   const bv = ref('');
@@ -135,19 +136,17 @@
     </header>
 
     <main class="space-y-6">
-      <div
-        class="flex items-center gap-3 px-6 py-4 bg-white/10 border border-white/20 rounded-2xl focus-within:border-pink-500 focus-within:ring-1 focus-within:ring-pink-500 transition-all"
+      <ClearableInput
+        v-model.trim="inputBv"
+        placeholder="输入或粘贴 BV 号..."
       >
-        <input
-          v-model.trim="inputBv"
-          placeholder="输入或粘贴 BV 号..."
-          class="flex-1 bg-transparent text-white placeholder-gray-500 outline-none !bg-transparent !border-0 !p-0 !rounded-none focus:!ring-0"
-        />
-        <div
-          v-if="loading"
-          class="w-5 h-5 border-2 border-white/20 border-t-pink-500 rounded-full animate-spin flex-shrink-0"
-        ></div>
-      </div>
+        <template #suffix>
+          <div
+            v-if="loading"
+            class="w-5 h-5 border-2 border-white/20 border-t-pink-500 rounded-full animate-spin flex-shrink-0"
+          ></div>
+        </template>
+      </ClearableInput>
 
       <TransitionGroup name="fade-up">
         <div

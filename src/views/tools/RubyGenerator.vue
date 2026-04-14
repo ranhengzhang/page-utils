@@ -2,6 +2,7 @@
   import { watch, computed, ref } from 'vue';
   import { eastAsianWidth } from 'get-east-asian-width';
   import { DocumentCopy } from '@element-plus/icons-vue';
+  import ClearableInput from '@/components/ClearableInput.vue';
 
   const rb = ref('');
   const rt = ref('');
@@ -229,39 +230,39 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label class="block text-white font-medium mb-3 select-none text-sm">汉字 (Base)</label>
-            <div class="relative">
-              <input
-                v-model="rb_val"
-                placeholder="请输入汉字..."
-                type="text"
-                class="input-dark"
-              />
-              <button
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
-                title="复制"
-                @click="writeText(rb, 'rb')"
-              >
-                <DocumentCopy class="w-4 h-4" />
-              </button>
-            </div>
+            <ClearableInput
+              v-model="rb_val"
+              placeholder="请输入汉字..."
+              input-class="input-dark"
+            >
+              <template #suffix>
+                <button
+                  class="text-gray-500 hover:text-gray-300 transition-colors"
+                  title="复制"
+                  @click="writeText(rb, 'rb')"
+                >
+                  <DocumentCopy class="w-4 h-4" />
+                </button>
+              </template>
+            </ClearableInput>
           </div>
           <div>
             <label class="block text-white font-medium mb-3 select-none text-sm">振假名 (Furigana)</label>
-            <div class="relative">
-              <input
-                v-model="rt_val"
-                placeholder="りょう て"
-                type="text"
-                class="input-dark"
-              />
-              <button
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
-                title="复制"
-                @click="writeText(rt, 'rt')"
-              >
-                <DocumentCopy class="w-4 h-4" />
-              </button>
-            </div>
+            <ClearableInput
+              v-model="rt_val"
+              placeholder="りょう て"
+              input-class="input-dark"
+            >
+              <template #suffix>
+                <button
+                  class="text-gray-500 hover:text-gray-300 transition-colors"
+                  title="复制"
+                  @click="writeText(rt, 'rt')"
+                >
+                  <DocumentCopy class="w-4 h-4" />
+                </button>
+              </template>
+            </ClearableInput>
           </div>
         </div>
       </div>

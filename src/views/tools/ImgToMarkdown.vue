@@ -95,7 +95,7 @@
           rows="3"
           spellcheck="false"
           placeholder="<img src=&quot;https://example.com/a.png&quot; alt=&quot;示例图片&quot; loading=&quot;lazy&quot; width=&quot;320&quot; />"
-          class="input-dark resize-y font-mono text-sm"
+          class="input-dark resize-y font-mono text-sm input-focus"
         ></textarea>
         <div class="mt-3 text-sm">
           <span
@@ -129,7 +129,7 @@
           readonly
           spellcheck="false"
           placeholder="这里会输出：![alt](src)"
-          class="input-dark input-readonly resize-none font-mono text-sm"
+          class="input-dark input-readonly resize-none font-mono text-sm input-focus"
         ></textarea>
         <div
           v-if="copied"
