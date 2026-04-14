@@ -182,9 +182,9 @@
       }
       rt_syls = rt_syls.filter((s) => s.length);
 
-      t.push(`${rbs.value[i] ?? ''}${i == 0 ? '|<\n' : '|\n'}${rt_syls[0] ?? ''}`);
+      t.push(`${rbs.value[i] ?? ''}${i == 0 ? '|<' : '|'}${rt_syls[0] ?? ''}`);
 
-      t.push(...rt_syls.slice(1).map((s) => `#|\n${s}`));
+      t.push(...rt_syls.slice(1).map((s) => `#|${s}`));
     }
 
     return t.join('');
