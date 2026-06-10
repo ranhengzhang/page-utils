@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/bili/:path*",
+      "destination": "https://api.bilibili.com/:path*"
+    },
+    {
+      "source": "/api/proxy",
+      "destination": "/api/proxy"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

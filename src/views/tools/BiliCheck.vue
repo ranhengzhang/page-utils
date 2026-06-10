@@ -21,15 +21,13 @@
   const isJsonOpen = ref(false);
 
   async function proxyFetch(targetUrl: string, options?: RequestInit) {
-    const proxyBaseUrl = 'https://api.codetabs.com/v1/proxy?quest=';
-    const fullProxyUrl = `${proxyBaseUrl}${encodeURIComponent(targetUrl)}`;
-    return fetch(fullProxyUrl, options);
+    const biliApiUrl = targetUrl.replace('https://api.bilibili.com', '/api/bili');
+    return fetch(biliApiUrl, options);
   }
 
   const proxiedVideoPic = computed(() => {
     if (!videoPic.value) return '';
-    const proxyBaseUrl = 'https://api.codetabs.com/v1/proxy?quest=';
-    return `${proxyBaseUrl}${encodeURIComponent(videoPic.value)}`;
+    return `/api/proxy?url=${encodeURIComponent(videoPic.value)}`;
   });
 
   const formatDuration = (seconds: number) => {
