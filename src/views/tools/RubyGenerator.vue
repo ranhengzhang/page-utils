@@ -1,13 +1,14 @@
 <script setup lang="ts">
   import { watch, computed, ref } from 'vue';
   import { eastAsianWidth } from 'get-east-asian-width';
-  import { DocumentCopy } from '@element-plus/icons-vue';
+  import { DocumentCopy, Lock, Unlock } from '@element-plus/icons-vue';
   import ClearableInput from '@/components/ClearableInput.vue';
 
   const rb = ref('');
   const rt = ref('');
   const rbs = ref<string[]>([]);
   const rts = ref<string[]>([]);
+  const isLocked = ref(false);
   const smallKana = 'ぁぃぅぇぉゃゅょァィゥェォャュョ';
 
   const toast = ref({
@@ -64,18 +65,22 @@
   };
 
   watch(rb, () => {
-    const result: string[] = [];
+    if (rb.value.includes(' ')) {
+      rbs.value = rb.value.split(' ').filter((s) => s.length);
+    } else {
+      const result: string[] = [];
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-    for (const char of [...rb.value]) {
-      if (smallKana.includes(char) && result.length > 0) {
-        result[result.length - 1] += char;
-      } else {
-        result.push(char);
+      // eslint-disable-next-line @typescript-eslint/no-misused-spread
+      for (const char of [...rb.value]) {
+        if (smallKana.includes(char) && result.length > 0) {
+          result[result.length - 1] += char;
+        } else {
+          result.push(char);
+        }
       }
-    }
 
-    rbs.value = result;
+      rbs.value = result;
+    }
   });
 
   watch(rt, () => {
@@ -107,6 +112,10 @@
         if (last) rt_val.value += last;
       } else {
         rb.value = v;
+      }
+
+      if (isLocked.value) {
+        rt_val.value = '';
       }
     },
   });
@@ -227,9 +236,9 @@
     <main class="space-y-6">
       <!-- 输入区域 -->
       <div class="glass p-6 rounded-3xl">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-white font-medium mb-3 select-none text-sm">汉字 (Base)</label>
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-6 items-center">
+          <div class="flex flex-col gap-2">
+            <label class="block text-white font-medium select-none text-sm">汉字 (Base)</label>
             <ClearableInput
               v-model="rb_val"
               placeholder="请输入汉字..."
@@ -246,8 +255,8 @@
               </template>
             </ClearableInput>
           </div>
-          <div>
-            <label class="block text-white font-medium mb-3 select-none text-sm">振假名 (Furigana)</label>
+          <div class="flex flex-col gap-2">
+            <label class="block text-white font-medium select-none text-sm">振假名 (Furigana)</label>
             <ClearableInput
               v-model="rt_val"
               placeholder="りょう て"
@@ -263,6 +272,22 @@
                 </button>
               </template>
             </ClearableInput>
+          </div>
+          <div class="flex flex-col gap-2 items-end">
+            <div class="invisible text-white font-medium select-none text-sm">占位</div>
+            <button
+              class="w-12 h-12 rounded-xl text-white transition-all duration-300 ease-out active:scale-90 flex items-center justify-center"
+              :style="{
+                backgroundImage: 'linear-gradient(45deg, rgb(16,185,129) 0%, rgb(16,185,129) 45%, rgb(255,255,255) 50%, rgb(236,72,153) 55%, rgb(236,72,153) 55%, rgb(236,72,153) 100%)',
+                backgroundSize: '215% 215%',
+                backgroundPosition: isLocked ? '0% 100%' : '100% 0%',
+              }"
+              :title="isLocked ? '解锁' : '锁定'"
+              @click="isLocked = !isLocked"
+            >
+              <Lock v-if="isLocked" class="w-5 h-5" />
+              <Unlock v-else class="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
