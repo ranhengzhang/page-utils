@@ -90,8 +90,8 @@
   const rb_val = computed({
     get: () => rb.value,
     set: (v: string) => {
-      rt_val.value = '';
       if (/.+\(.+\)/.exec(v)) {
+        rt_val.value = '';
         const [rb_, rt_] = v.split('(');
         rb.value = rb_?.trim() ?? '';
         rt_val.value = rt_?.trim() ?? '';
@@ -112,10 +112,9 @@
         if (last) rt_val.value += last;
       } else {
         rb.value = v;
-      }
-
-      if (isLocked.value) {
-        rt_val.value = '';
+        if (!isLocked.value) {
+          rt_val.value = '';
+        }
       }
     },
   });
