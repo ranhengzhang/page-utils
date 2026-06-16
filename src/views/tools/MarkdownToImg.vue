@@ -29,8 +29,8 @@
       };
     }
 
-    const alt = match[1].trim();
-    const src = match[2].trim();
+    const alt = (match[1] ?? '').trim();
+    const src = (match[2] ?? '').trim();
 
     if (!src) {
       return {
