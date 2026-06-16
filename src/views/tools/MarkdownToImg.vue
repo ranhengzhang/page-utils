@@ -1,0 +1,144 @@
+<script setup lang="ts">
+  import { computed, ref } from 'vue';
+  import { DocumentCopy } from '@element-plus/icons-vue';
+
+  const input = ref('');
+  const copied = ref(false);
+
+  type ParseResult = {
+    src: string;
+    alt: string;
+    html: string;
+    error: string;
+  };
+
+  function parseMarkdownToImgTag(raw: string): ParseResult {
+    const text = (raw ?? '').trim();
+    if (!text) {
+      return { src: '', alt: '', html: '', error: '' };
+    }
+
+    const match = text.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+
+    if (!match) {
+      return {
+        src: '',
+        alt: '',
+        html: '',
+        error: '未检测到 Markdown 图片语法（格式应为 ![alt](src)）',
+      };
+    }
+
+    const alt = match[1].trim();
+    const src = match[2].trim();
+
+    if (!src) {
+      return {
+        src: '',
+        alt,
+        html: '',
+        error: '缺少 src，无法生成 HTML 图片标签',
+      };
+    }
+
+    const html = alt
+      ? `<img src="${src}" alt="${alt}" />`
+      : `<img src="${src}" />`;
+
+    return { src, alt, html, error: '' };
+  }
+
+  const result = computed(() => parseMarkdownToImgTag(input.value));
+
+  async function copy() {
+    if (!result.value.html) return;
+
+    try {
+      await navigator.clipboard.writeText(result.value.html);
+      copied.value = true;
+      window.setTimeout(() => (copied.value = false), 1200);
+    } catch {
+      copied.value = false;
+      alert('复制失败：当前环境可能不允许访问剪贴板。你可以手动选中输出内容复制。');
+    }
+  }
+
+  function fillExample() {
+    input.value =
+      '![City at night](https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=800&q=60)';
+  }
+</script>
+
+<template>
+  <div class="w-full max-w-2xl">
+    <header class="text-center mb-10 select-none">
+      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">
+        Markdown → IMG
+      </h1>
+      <p class="text-gray-400 text-sm">
+        粘贴 Markdown 图片语法，提取 src / alt 并转换为 HTML5 &lt;img&gt; 标签
+      </p>
+    </header>
+
+    <main class="space-y-6">
+      <div class="glass p-6 rounded-3xl">
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-white font-medium">输入（Markdown 图片语法）</span>
+          <button
+            class="px-4 py-2 rounded-full bg-white/10 text-gray-300 text-sm hover:bg-white/20 transition-colors"
+            @click="fillExample"
+          >
+            填充示例
+          </button>
+        </div>
+        <textarea
+          v-model="input"
+          rows="3"
+          spellcheck="false"
+          placeholder="![示例图片](https://example.com/a.png)"
+          class="input-dark resize-y font-mono text-sm input-focus"
+        ></textarea>
+        <div class="mt-3 text-sm">
+          <span
+            v-if="result.error"
+            class="text-red-400"
+          >{{ result.error }}</span>
+          <span
+            v-else
+            class="text-emerald-400"
+          >
+            已识别：src{{ result.src ? ' ✓' : ' ×' }}，alt{{ result.alt ? ' ✓' : ' ×' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="glass p-6 rounded-3xl">
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-white font-medium">输出（HTML5 &lt;img&gt; 标签）</span>
+          <button
+            :disabled="!result.html"
+            class="px-4 py-2 rounded-full bg-pink-500 text-white text-sm hover:bg-pink-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            @click="copy"
+          >
+            <DocumentCopy class="w-4 h-4" />
+            复制
+          </button>
+        </div>
+        <textarea
+          :value="result.html"
+          rows="2"
+          readonly
+          spellcheck="false"
+          placeholder="这里会输出：<img src=&quot;...&quot; alt=&quot;...&quot; />"
+          class="input-dark input-readonly resize-none font-mono text-sm input-focus"
+        ></textarea>
+        <div
+          v-if="copied"
+          class="mt-3 text-sm text-emerald-400"
+        >
+          已复制到剪贴板
+        </div>
+      </div>
+    </main>
+  </div>
+</template>

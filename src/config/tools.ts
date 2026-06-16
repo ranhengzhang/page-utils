@@ -25,6 +25,14 @@ export const tools: ToolConfig[] = [
     component: () => import('../views/tools/ImgToMarkdown.vue'),
   },
   {
+    id: 'markdown-to-img',
+    name: 'Markdown → IMG',
+    desc: '将 Markdown 图片语法转换为 HTML img 标签',
+    icon: '📄',
+    path: '/tools/markdown-to-img',
+    component: () => import('../views/tools/MarkdownToImg.vue'),
+  },
+  {
     id: 'regex-extractor',
     name: 'Regex Extractor',
     desc: '现代化正则表达式提取工具',
